@@ -12,32 +12,43 @@ namespace SDK
     {
         static void Main(string[] args)
         {
-            var result = (Dictionary<string,object>)AboutPlist.parse("/home/duoyi/SDK/SDK/Plist/app.plist");
-            var a = result["items"];
-            var type = a.GetType();
+            var result = AboutPlist.parse("/home/duoyi/SDK/SDK/Plist/app.plist");
+            var a = result["items"][0]["assets"][0]["kind"];
             Console.ReadKey();
 
         }
     }
 
+
+
+
+
+
+
+
     class AboutPlist
     {
-        
-        class Node{
-            public object value;
-
-
-
-
-
+        public abstract class prototypeNode{
+            public abstract prototypeNode this[string key]{get;set;}
+            public abstract prototypeNode this[int key]{get;set;}
 
         }
-        // public static Dictionary<string, object> result = new Dictionary<string, object>();
-        // public static Stack<object> temp = new Stack<object>();
-        // public static Stack<string> keys = new Stack<string>();
-        public delegate object ConvertNode(XElement node);
+        // public class Node<TValue>:prototypeNode{
+        //     public TValue value{get;set;}
+        //     public TValue this[string key]{
+        //         get{
+        //             return value;
+        //         }
+        //     }
+        // }
+
+
+
+
+
+        public delegate dynamic ConvertNode(XElement node);
         public static Dictionary<NodeType, ConvertNode> ConvertDict = new Dictionary<NodeType, ConvertNode>(){
-            
+
             {NodeType.DICT,new ConvertNode(parseDict)},
             {NodeType.ARRAY,new ConvertNode(parseArray)},
             {NodeType.STRING,new ConvertNode(parseString)},
@@ -48,8 +59,6 @@ namespace SDK
             {NodeType.TRUE,new ConvertNode(parseTrue)},
             {NodeType.FALSE,new ConvertNode(parseFalse)}
         };
-
-
 
         public enum NodeType
         {
@@ -81,21 +90,22 @@ namespace SDK
                 {NodeType.DATE,new string[]{"<date>","</date>"}},
                 {NodeType.REAL,new string[]{"<real>","</real>"}},
                 {NodeType.FALSE,new string[]{"<false/>"}},
+
                 {NodeType.TRUE,new string[]{"<true/>"}}
             };
             return markPairs[type];
         }
 
-        public static object parse(string path)
+        public static dynamic parse(string path)
         {
             XDocument xmlDoc = XDocument.Load(path);
             XElement root = xmlDoc.Root.Element("dict");
             return ConvertDict[NodeType.DICT](root);
         }
-        public static object parseDict(XElement input)
+        public static dynamic parseDict(XElement input)
         {
             Console.WriteLine("execute parseDict.");
-            Dictionary<string, object> result = new Dictionary<string, object>();
+            Dictionary<string, dynamic> result = new Dictionary<string, dynamic>();
             var nodes = input.Nodes().GetEnumerator();
             while (nodes.MoveNext())
             {
@@ -121,12 +131,14 @@ namespace SDK
                     throw new ArgumentException("字典节点中找不到对应key");
                 }
             }
+            //Node<Dictionary<string,prototypeNode>> temp = new Node<Dictionary<string, prototypeNode>>();
+            //temp.value = result;
             return result;
         }
-        public static object parseArray(XElement input)
+        public static dynamic parseArray(XElement input)
         {
             Console.WriteLine("execute parseArray.");
-            List<object> a = new List<object>();
+            List<dynamic> a = new List<dynamic>();
             var nodes = input.Nodes().GetEnumerator();
             while (nodes.MoveNext())
             {
@@ -134,46 +146,70 @@ namespace SDK
                 NodeType type = GetType(node);
                 a.Add(ConvertDict[type](node));
             }
-            return a.ToArray();
+            //Node<Array> result = new Node<Array>();
+            //result.value = a.ToArray();
+
+            return a;
         }
-        public static object parseString(XElement input)
+        public static dynamic parseString(XElement input)
         {
             Console.WriteLine("execute parseString.");
+            //Node<string> result = new Node<string>();
+            //result.value = input.Value;
             return input.Value;
         }
-        public static object parseInteger(XElement input)
+        public static dynamic parseInteger(XElement input)
         {
             Console.WriteLine("execute parseInteger.");
+            //Node<int> result = new Node<int>();
+            //result.value = Convert.ToInt32(input.Value);
             return Convert.ToInt32(input.Value);
         }
-        public static object parseTrue(XElement input)
+        public static dynamic parseTrue(XElement input)
         {
             Console.WriteLine("execute parseTrue.");
+            //Node<bool> result = new Node<bool>();
+            //result.value = input.Name.LocalName.Equals("false") ? false : true;
             return input.Name.LocalName.Equals("false") ? false : true;
 
         }
-        public static object parseFalse(XElement input)
+        public static dynamic parseFalse(XElement input)
         {
             Console.WriteLine("execute parseFalse.");
+            //Node<bool> result = new Node<bool>();
+            //result.value = input.Name.LocalName.Equals("false") ? false : true;
             return input.Name.LocalName.Equals("false") ? false : true;
         }
-        public static object parseDate(XElement input)
+        public static dynamic parseDate(XElement input)
         {
             Console.WriteLine("execute parseDate.");
+            //Node<DateTime> result = new Node<DateTime>();
+            //result.value = Convert.ToDateTime(input.Value);
             return Convert.ToDateTime(input.Value);
         }
-        public static object parseData(XElement input)
+        public static dynamic parseData(XElement input)
         {
             Console.WriteLine("execute parseData.");
+            //Node<byte[]> result = new Node<byte[]>();
+            //result.value = Convert.FromBase64String(input.Value);
             return Convert.FromBase64String(input.Value);
         }
-        public static object parseReal(XElement input)
+        public static dynamic parseReal(XElement input)
         {
             Console.WriteLine("execute parseReal.");
+            //Node<decimal> result = new Node<decimal>();
+            //result.value = Convert.ToDecimal(input.Value);
             return Convert.ToDecimal(input.Value);
         }
 
     }
+
+
+
+
+
+
+
 
 
 
