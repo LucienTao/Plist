@@ -1,0 +1,10 @@
+/home/duoyi/SDK/SDK/bin/Debug/netcoreapp2.0/SDK.deps.json
+/home/duoyi/SDK/SDK/bin/Debug/netcoreapp2.0/SDK.runtimeconfig.json
+/home/duoyi/SDK/SDK/bin/Debug/netcoreapp2.0/SDK.runtimeconfig.dev.json
+/home/duoyi/SDK/SDK/bin/Debug/netcoreapp2.0/SDK.dll
+/home/duoyi/SDK/SDK/bin/Debug/netcoreapp2.0/SDK.pdb
+/home/duoyi/SDK/SDK/obj/Debug/netcoreapp2.0/SDK.csproj.CoreCompileInputs.cache
+/home/duoyi/SDK/SDK/obj/Debug/netcoreapp2.0/SDK.AssemblyInfoInputs.cache
+/home/duoyi/SDK/SDK/obj/Debug/netcoreapp2.0/SDK.AssemblyInfo.cs
+/home/duoyi/SDK/SDK/obj/Debug/netcoreapp2.0/SDK.dll
+/home/duoyi/SDK/SDK/obj/Debug/netcoreapp2.0/SDK.pdb
